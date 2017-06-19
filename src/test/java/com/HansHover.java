@@ -1,7 +1,5 @@
 package com;
 
-import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,33 +14,35 @@ public class HansHover {
 		String path = System.getProperty("user.dir");
 		System.setProperty("webdriver.chrome.driver", path+ "\\src\\test\\resources\\drivers\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
+		driver.manage().window().maximize();
 		driver.get("http://hansrajcollege.ac.in");
-		
-		
-		WebElement element = driver.findElement(By.xpath(".//*[@href='acdmc.php']"));
-		Actions action = new Actions(driver);
-		action.moveToElement(element).perform();
-		
+		try{
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy
-				(By.xpath("/ul[starts-with(@class,'MenuBarSubmenuVisible')]")));
-		
-		driver.findElement(By.xpath("/ul[starts-with(@class,'MenuBarSubmenuVisible')]"));
-		/*
-		WebElement subElement = driver.findElement(By.xpath(".//*[@href='course.php']"));
-		action.moveToElement(subElement).perform();
-		*/
-		/*driver.findElement(By.xpath(".//*[@href='acdmc.php']"));
-
-		WebDriverWait wait = new WebDriverWait(driver, 10);
-		WebElement element2 = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(".//*[@href='course.php']")));
-		
-		
-		Actions action = new Actions(driver);
-		action.moveToElement(element2).build().perform();
-		driver.findElement(By.xpath(".//*[@href='course.php']"));
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[text()='Academics']"))));
+		WebElement element = driver.findElement(By.xpath("//a[text()='Academics']"));
 	
-		*/
+		Actions action = new Actions(driver);
+		Actions act1 =action.moveToElement(element);
+		act1.moveToElement(driver.findElement(By.xpath("//a[text()='Admissions']"))).build().perform();
+		
+		
+		wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//ul[@class='MenuBarSubmenuVisible']"))));
+		
+		
+		WebElement department = driver.findElement(By.xpath(".//*[@id='MenuBar1']/li[3]/ul/li[4]/a"));
+		action.moveToElement(department).perform();
+		
+		WebElement arts = driver.findElement(By.xpath(".//*[@id='MenuBar1']/li[3]/ul/li[4]/ul/li[2]/a"));
+		action.moveToElement(arts).perform();
+		
+		WebElement com = driver.findElement(By.xpath(".//*[@id='MenuBar1']/li[3]/ul/li[4]/ul/li[2]/ul/li[1]/a"));
+		action.moveToElement(com).perform();
+		action.click();
+		
+		driver.quit();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 }
 }
